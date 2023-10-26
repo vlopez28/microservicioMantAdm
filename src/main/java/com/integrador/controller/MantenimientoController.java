@@ -47,14 +47,26 @@ public class MantenimientoController {
 
     }
 	
+		@PostMapping("")
+	    public ResponseEntity<?> save (@RequestBody @Validated MantenimientoRequestDto request) {
+		    try {
+		    	System.out.println(request.getIdMonopatin()+"controller");
+		    	return ResponseEntity.status(HttpStatus.OK).body(mantenimientoService.save(request));
+		    }catch(Exception e) {
+		    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Ocurrio un error, revise los campos ingresados");
+		    } 
+		}   
+	
 	//agregar un mantenimiento, a la tabla y setea el monopatin al q se le hace el mantenimientno
-	@PostMapping("/{id}")
-    public ResponseEntity<?> agregarMantenimiento (@PathVariable Long id, @RequestBody @Validated MantenimientoRequestDto request) {
+	@PostMapping("/agregarMantenimiento/{idMonopatin}")
+    public ResponseEntity<?> agregarMantenimiento (@PathVariable Long idMonopatin) {
 	    try {
-	    	System.out.println(request.getIdMonopatin()+"controller");
-	    	return ResponseEntity.status(HttpStatus.OK).body(mantenimientoService.save(request, id));
+	    	System.out.println("hola");
+
+	    	//System.out.println(request.getIdMonopatin()+"controller");
+	    	return ResponseEntity.status(HttpStatus.OK).body(mantenimientoService.agregarMonopatinAMantenimiento(idMonopatin));
 	    }catch(Exception e) {
-	    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Ocurrio un error, revise los campos ingresados");
+	    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Ocurrio un error, id de monopatin inexistente");
 	    } 
 	}   
 	
