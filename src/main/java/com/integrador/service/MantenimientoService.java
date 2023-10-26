@@ -37,10 +37,11 @@ public class MantenimientoService {
 //    private AppConfig restTemplateConfig;
 //
     @Transactional
-    public MantenimientoResponseDto save(MantenimientoRequestDto request){
-    	System.out.println(request.getIdMonopatin());
-        Mantenimiento mantenimiento= new Mantenimiento(request);
-        System.out.println("hola"+mantenimiento);
+    public MantenimientoResponseDto save(MantenimientoRequestDto request, Long id){
+        
+    	
+    	
+    	Mantenimiento mantenimiento= new Mantenimiento(request);
         Mantenimiento result = this.mantenimientoRepository.save(mantenimiento);
         return new MantenimientoResponseDto(result);
     }
