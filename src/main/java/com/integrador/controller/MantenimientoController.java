@@ -46,27 +46,13 @@ public class MantenimientoController {
         }
 
     }
-	
-		@PostMapping("")
-	    public ResponseEntity<?> save (@RequestBody @Validated MantenimientoRequestDto request) {
-		    try {
-		    	System.out.println(request.getIdMonopatin()+"controller");
-		    	return ResponseEntity.status(HttpStatus.OK).body(mantenimientoService.save(request));
-		    }catch(Exception e) {
-		    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Ocurrio un error, revise los campos ingresados");
-		    } 
-		}   
-	
-	//agregar un mantenimiento, a la tabla y setea el monopatin al q se le hace el mantenimientno
-	@PostMapping("/agregarMantenimiento/{idMonopatin}")
-    public ResponseEntity<?> agregarMantenimiento (@PathVariable Long idMonopatin) {
+	//este va? o solo dejamos el agregar mantenimiento?
+	@PostMapping("")
+    public ResponseEntity<?> save (@RequestBody @Validated MantenimientoRequestDto request) {
 	    try {
-	    	System.out.println("hola");
-
-	    	//System.out.println(request.getIdMonopatin()+"controller");
-	    	return ResponseEntity.status(HttpStatus.OK).body(mantenimientoService.agregarMonopatinAMantenimiento(idMonopatin));
+	    	return ResponseEntity.status(HttpStatus.OK).body(mantenimientoService.save(request));
 	    }catch(Exception e) {
-	    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Ocurrio un error, id de monopatin inexistente");
+	    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Ocurrio un error, revise los campos ingresados");
 	    } 
 	}   
 	
@@ -92,5 +78,25 @@ public class MantenimientoController {
         	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el mantenimiento con el ID proporcionado.");
         }
     }
+    
+  //agregar un mantenimiento, a la tabla y setea el monopatin al q se le hace el mantenimientno
+  	@PostMapping("/agregarMonopatinAMantenimiento/{idMonopatin}")
+      public ResponseEntity<?> agregarMantenimiento (@PathVariable Long idMonopatin) {
+  	    try {
+  	    	return ResponseEntity.status(HttpStatus.OK).body(mantenimientoService.agregarMonopatinAMantenimiento(idMonopatin));
+  	    }catch(Exception e) {
+  	    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Ocurrio un error, id de monopatin inexistente");
+  	    } 
+  	}   
+  	
+  //setea un mantenimiento como terminado y setea el monopatin como disponible
+  	@PostMapping("/finalizarMantenimiento/{idMantenimiento}")
+      public ResponseEntity<?> finalizarMantenimiento (@PathVariable Long idMantenimiento) {
+  	    try {	    
+  	    	return ResponseEntity.status(HttpStatus.OK).body(mantenimientoService.finalizarMantenimiento(idMantenimiento));
+  	    }catch(Exception e) {
+  	    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Ocurrio un error, id de mantenimiento inexistente");
+  	    } 
+  	}   
 	
 }

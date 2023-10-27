@@ -40,19 +40,11 @@ public class Monopatin implements Serializable {
 	public Monopatin() {
 	
 	}
-//    
-//	public Monopatin(MonopatinRequestDto request) {
-//        this.ubicacion = request.getUbicacion();
-//        this.estado = request.getEstado();
-//        this.disponible = request.isDisponible();
-//        this.kmsRecorridos = request.getKmsRecorridos();
-//        this.kmsMant = request.getkmsMantenimiento();
-//        this.tiempoUsoTotal = request.getTiempoUsoTotal();
-//        this.tiempoPausado = request.getTiempoPausado();
-//        this.cantidadViajes = request.getCantidadViajes();
-//    }
     
    
+	public boolean estaEnMantenimiento() {
+		return (!disponible && this.estado.equalsIgnoreCase("en mantenimiento"));
+	}
     
     public boolean necesitaMantenimiento() {
     	return this.cantKmParaMant <= this.kmsMantenimiento;

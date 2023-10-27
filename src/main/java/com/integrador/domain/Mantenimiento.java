@@ -37,7 +37,11 @@ public class Mantenimiento implements Serializable{
        this.reparado= request.isReparado();
     }
     
-
+    public void finalizar() {
+    	this.setReparado(true);
+    	this.setFechaHoraFinalizacionMantenimiento(new Date());
+    }
+    
 	public Long getMonopatinId() {
 		return monopatinId;
 	}
