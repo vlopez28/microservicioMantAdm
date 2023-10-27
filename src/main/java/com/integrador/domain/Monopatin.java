@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import java.io.Serializable;
 import java.time.Duration;
 
+import com.integrador.service.dto.monopatin.MonopatinRequestDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Transient;
@@ -14,8 +16,7 @@ import jakarta.persistence.Transient;
 @NoArgsConstructor
 public class Monopatin implements Serializable {
 
-	private Long id;
-	
+
     private GPS ubicacion;
 
     private String estado;
@@ -40,8 +41,47 @@ public class Monopatin implements Serializable {
 	public Monopatin() {
 	
 	}
-    
+	
+	public Monopatin(Monopatin request) {
+        this.ubicacion = request.getUbicacion();
+        this.estado = request.getEstado();
+        this.disponible = request.isDisponible();
+        this.kmsRecorridos = request.getKmsRecorridos();
+        this.kmsMantenimiento = request.getKmsMantenimiento();
+        this.tiempoUsoTotal = request.getTiempoUsoTotal();
+        this.tiempoPausado = request.getTiempoPausado();
+        this.cantidadViajes = request.getCantidadViajes();
+    }
+	
+	public Monopatin(MonopatinRequestDto request) {
+        this.ubicacion = request.getUbicacion();
+        this.estado = request.getEstado();
+        this.disponible = request.isDisponible();
+        this.kmsRecorridos = request.getKmsRecorridos();
+        this.kmsMantenimiento = request.getkmsMantenimiento();
+        this.tiempoUsoTotal = request.getTiempoUsoTotal();
+        this.tiempoPausado = request.getTiempoPausado();
+        this.cantidadViajes = request.getCantidadViajes();
+    }
    
+	public Monopatin(GPS ubicacion, String estado, boolean disponible, double kmsRecorridos,
+			double kmsMantenimiento, Long tiempoUsoTotal, Long tiempoPausado,
+			Long cantidadViajes) {
+		super();
+	
+		this.ubicacion = ubicacion;
+		this.estado = estado;
+		this.disponible = disponible;
+		this.kmsRecorridos = kmsRecorridos;
+		this.kmsMantenimiento = kmsMantenimiento;
+		this.cantKmParaMant = cantKmParaMant;
+		this.tiempoUsoTotal = tiempoUsoTotal;
+		this.tiempoPausado = tiempoPausado;
+		this.cantidadViajes = cantidadViajes;
+	}
+
+
+
 	public boolean estaEnMantenimiento() {
 		return (!disponible && this.estado.equalsIgnoreCase("en mantenimiento"));
 	}
@@ -79,9 +119,7 @@ public class Monopatin implements Serializable {
 	public void setDisponible(boolean disponible) {
 		this.disponible = disponible;
 	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 
 
 
@@ -121,9 +159,7 @@ public class Monopatin implements Serializable {
 
 
 
-	public Long getId() {
-		return id;
-	}
+	
 	
 	public Long getTiempoPausado() {
 		return tiempoPausado;
@@ -152,7 +188,7 @@ public class Monopatin implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Monopatin [id=" + id + ", ubicacion=" + ubicacion + ", estado=" + estado + ", disponible=" + disponible
+		return "Monopatin [ubicacion=" + ubicacion + ", estado=" + estado + ", disponible=" + disponible
 				+ ", kmsRecorridos=" + kmsRecorridos + ", kmsMant=" + kmsMantenimiento + ", cantKmParaMant=" + cantKmParaMant
 				+ ", tiempoUsoTotal=" + tiempoUsoTotal + ", tiempoPausado=" + tiempoPausado + ", cantidadViajes="
 				+ cantidadViajes + "]";

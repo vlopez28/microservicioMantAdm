@@ -14,6 +14,7 @@ import com.integrador.domain.Monopatin;
 import com.integrador.service.*;
 import com.integrador.service.dto.administrador.AdministradorRequestDto;
 import com.integrador.service.dto.administrador.AdministradorResponseDto;
+import com.integrador.service.dto.monopatin.MonopatinRequestDto;
 import com.integrador.domain.Administrador;
 
 import java.util.List;
@@ -73,7 +74,26 @@ public class AdministradorController {
         }
     }
     
+    //agregar monopatin
+    @PostMapping("/agregarMonopatin")
+    public ResponseEntity<?> agregarMonopatin (@RequestBody @Validated Monopatin request) {
+	    try {
+	    	return ResponseEntity.status(HttpStatus.OK).body(administradorService.agregarMonopatin(request));
+	    }catch(Exception e) {
+	    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Ocurrio un error, revise los campos ingresados");
+	    } 
+	}  
     
+    @DeleteMapping("/eliminarMonopatin/{idMonopatin}")
+    public ResponseEntity<?> quitarMonopatin(@PathVariable Long idMonopatin){
+        try{
+            this.administradorService.quitarMonopatin(idMonopatin);
+            return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente monopatin con el id: " + idMonopatin);
+        }catch (Exception e){
+        	e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error. No se pudo eliminar el monopatin con id: " + idMonopatin);
+        }
+    }
     
  
 }
