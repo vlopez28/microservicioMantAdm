@@ -136,6 +136,7 @@ public class MantenimientoService {
 	    this.mantenimientoRepository.save(mant);
 	 }
     
+    
     @Transactional
     public ResponseEntity finalizarMantenimiento(Long idMantenimiento){  	
     	Mantenimiento mant = this.mantenimientoRepository.findById(idMantenimiento).orElseThrow(
@@ -164,8 +165,9 @@ public class MantenimientoService {
 		    		m.setDisponible(true);
 		    		m.setEstado("disponible");
 		    		m.setKmsMantenimiento(0);
+		    		m.setTiempoUsoParaMant(0);
 		    		HttpEntity<Monopatin> requestEntity2 = new HttpEntity<>(m,headers);
-			        System.out.println("hola2");
+			        System.out.println(requestEntity2);
 					ResponseEntity<Monopatin> response2 = restTemplate.exchange(
 							"http://localhost:8003/api/monopatines/" + mant.getMonopatinId(),
 							HttpMethod.PUT,

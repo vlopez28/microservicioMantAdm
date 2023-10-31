@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 import java.time.Duration;
+import java.util.Date;
 
 import com.integrador.service.dto.monopatin.MonopatinRequestDto;
 
@@ -15,8 +16,8 @@ import jakarta.persistence.Transient;
 @Data
 @NoArgsConstructor
 public class Monopatin implements Serializable {
-
-
+	private Long id;
+	
     private GPS ubicacion;
 
     private String estado;
@@ -28,14 +29,19 @@ public class Monopatin implements Serializable {
     private double kmsMantenimiento;
 
     private double cantKmParaMant = 100;
+    
+    private double cantTiempoUsoParaMant = 10000;
 
-   
+    private double tiempoUsoParaMant;//aumenta a cada viaje, vuelve a cero con hace mant
+
     private Long tiempoUsoTotal; //en segundos
     
     private Long tiempoPausado; //en segundos
     
    
     private Long cantidadViajes;
+    
+    private Date fechaViaje;
 
 
 	public Monopatin() {
@@ -43,58 +49,54 @@ public class Monopatin implements Serializable {
 	}
 	
 	public Monopatin(Monopatin request) {
+		this.id = request.getId();
         this.ubicacion = request.getUbicacion();
         this.estado = request.getEstado();
         this.disponible = request.isDisponible();
         this.kmsRecorridos = request.getKmsRecorridos();
         this.kmsMantenimiento = request.getKmsMantenimiento();
+        this.tiempoUsoParaMant = request.getTiempoUsoParaMant();
         this.tiempoUsoTotal = request.getTiempoUsoTotal();
         this.tiempoPausado = request.getTiempoPausado();
         this.cantidadViajes = request.getCantidadViajes();
+        this.fechaViaje = request.getFechaViaje();
     }
-	
-	public Monopatin(MonopatinRequestDto request) {
-        this.ubicacion = request.getUbicacion();
-        this.estado = request.getEstado();
-        this.disponible = request.isDisponible();
-        this.kmsRecorridos = request.getKmsRecorridos();
-        this.kmsMantenimiento = request.getkmsMantenimiento();
-        this.tiempoUsoTotal = request.getTiempoUsoTotal();
-        this.tiempoPausado = request.getTiempoPausado();
-        this.cantidadViajes = request.getCantidadViajes();
-    }
-   
-	public Monopatin(GPS ubicacion, String estado, boolean disponible, double kmsRecorridos,
-			double kmsMantenimiento, Long tiempoUsoTotal, Long tiempoPausado,
-			Long cantidadViajes) {
-		super();
-	
-		this.ubicacion = ubicacion;
-		this.estado = estado;
-		this.disponible = disponible;
-		this.kmsRecorridos = kmsRecorridos;
-		this.kmsMantenimiento = kmsMantenimiento;
-		this.cantKmParaMant = cantKmParaMant;
-		this.tiempoUsoTotal = tiempoUsoTotal;
-		this.tiempoPausado = tiempoPausado;
-		this.cantidadViajes = cantidadViajes;
+
+
+	public Long getId() {
+		return id;
 	}
 
-
+	public Date getFechaViaje() {
+		return fechaViaje;
+	}
 
 	public boolean estaEnMantenimiento() {
 		return (!disponible && this.estado.equalsIgnoreCase("en mantenimiento"));
 	}
     
     public boolean necesitaMantenimiento() {
-    	return this.cantKmParaMant <= this.kmsMantenimiento;
+    	return (this.cantKmParaMant <= this.kmsMantenimiento || 
+    			this.cantTiempoUsoParaMant <= this.tiempoUsoParaMant);
     }
+    
+    
 
 	public double getKmsMantenimiento() {
 		return kmsMantenimiento;
 	}
 
+	public double getTiempoUsoParaMant() {
+		return tiempoUsoParaMant;
+	}
 
+	public void setCantKmParaMant(double cantKmParaMant) {
+		this.cantKmParaMant = cantKmParaMant;
+	}
+
+	public void setTiempoUsoParaMant(double tiempoUsoParaMant) {
+		this.tiempoUsoParaMant = tiempoUsoParaMant;
+	}
 
 	public double getCantKmParaMant() {
 		return cantKmParaMant;
@@ -193,13 +195,4 @@ public class Monopatin implements Serializable {
 				+ ", tiempoUsoTotal=" + tiempoUsoTotal + ", tiempoPausado=" + tiempoPausado + ", cantidadViajes="
 				+ cantidadViajes + "]";
 	}
-//
-//    public Monopatin(Gps ubicacion, String estado, double kmsTotales, Long tiempoUsoTotales, Long tiempoPausado, Long cantidadViajes) {
-//        this.ubicacion = ubicacion;
-//        this.estado = estado;
-//        this.kmsTotales = kmsTotales;
-//        this.tiempoUsoTotales = tiempoUsoTotales;
-//        this.tiempoPausado = tiempoPausado;
-//        this.cantidadViajes = cantidadViajes;
-//    }
 }

@@ -8,19 +8,35 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class MonopatinRequestDto {
-	private Long idMonopatin;
+	//private Long id;
     private GPS ubicacion;
     private String estado;
     private boolean disponible;
     private double kmsRecorridos;
     private double kmsMantenimiento;
+    private double tiempoUsoParaMant;
     private Long tiempoUsoTotal;
     private Long tiempoPausado;
     private Long cantidadViajes;
     
-    
-    
-    public double getkmsMantenimiento() {
+
+//
+//	public Long getId() {
+//		return id;
+//	}
+
+
+	public double getKmsMantenimiento() {
+		return kmsMantenimiento;
+	}
+
+
+	public double getTiempoUsoParaMant() {
+		return tiempoUsoParaMant;
+	}
+
+
+	public double getkmsMantenimiento() {
 		return kmsMantenimiento;
 	}
 
@@ -39,9 +55,6 @@ public class MonopatinRequestDto {
 		return tiempoPausado;
 	}
 	
-    public Long getIdMonopatin() {
-		return idMonopatin;
-	}
 	
 	public GPS getUbicacion() {
 		return ubicacion;

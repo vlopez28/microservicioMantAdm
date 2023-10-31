@@ -15,8 +15,10 @@ import com.integrador.service.*;
 import com.integrador.service.dto.administrador.AdministradorRequestDto;
 import com.integrador.service.dto.administrador.AdministradorResponseDto;
 import com.integrador.service.dto.monopatin.MonopatinRequestDto;
+import com.integrador.service.dto.parada.ParadaRequestDto;
 import com.integrador.domain.Administrador;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -95,5 +97,83 @@ public class AdministradorController {
         }
     }
     
- 
+    
+    //trae los monopatines con mas de tantos km
+    @GetMapping("/monopatines/porKm/{cantKm}")
+    public ResponseEntity<?> getMonopatinesPorKm(@PathVariable Long cantKm){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(administradorService.getMonopatinesPorKm(cantKm));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error. No se encontraron monopatines");
+        }
+
+    }
+    
+  //trae los monopatines con mas de tanto tiempo, sin contar pausas
+    @GetMapping("/monopatines/porTiempoSinPausa/{cantKm}")
+    public ResponseEntity<?> getMonopatinesPorTiempoSinPausa(@PathVariable Long cantKm){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(administradorService.getMonopatinesPorTiempoSinPausa(cantKm));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error. No se encontraron monopatines");
+        }
+
+    }
+    
+  //trae los monopatines con mas de tanto tiempo, sin contar pausas
+    @GetMapping("/monopatines/porTiempoConPausa/{cantKm}")
+    public ResponseEntity<?> getMonopatinesPorTiempoConPausa(@PathVariable Long cantKm){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(administradorService.getMonopatinesPorTiempoConPausa(cantKm));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error. No se encontraron monopatines");
+        }
+
+    }
+    
+    //crear un parada
+    @PostMapping("/paradas/agregarParada")
+    public ResponseEntity<?> agregarParada (@RequestBody @Validated ParadaRequestDto request) {
+	    try {
+	    	return ResponseEntity.status(HttpStatus.OK).body(administradorService.agregarParada(request));
+	    }catch(Exception e) {
+	    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Ocurrio un error, revise los campos ingresados");
+	    } 
+	}  
+    
+    
+    //quitar una parada
+    @DeleteMapping("/paradas/quitarParada/{idParada}")
+    public ResponseEntity<?> eliminarParada (@PathVariable Long idParada){
+        try{
+            this.administradorService.eliminarParada(idParada);
+            return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente parada con el id: " + idParada);
+        }catch (Exception e){
+        	e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error. Ya se elimino la parada con id: " + idParada);
+        }
+    }
+    
+    //anular cuenta
+    @PutMapping("/cuentas/anularCuenta/{idCuenta}")
+    public ResponseEntity<?> anularCuenta(@PathVariable Long idCuenta) {
+        try {
+        	System.out.println("hola controller");
+            return ResponseEntity.status(HttpStatus.OK).body(administradorService.anularCuenta(idCuenta));
+          
+        } catch (Exception e) {
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la cuenta con el ID proporcionado.");
+        }
+    }
+    
+    //consultar los monopatines con más de X viajes en un cierto año
+    @GetMapping("/monopatines/conViajes/{cantViajes}/{anio}")
+    public ResponseEntity<?> getMonopatinesConViajes(@PathVariable Long cantViajes, @PathVariable Integer anio){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(administradorService.getMonopatinesConViajes(cantViajes, anio));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error. No se encontraron monopatines");
+        }
+
+    }
 }
