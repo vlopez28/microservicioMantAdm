@@ -13,6 +13,11 @@ public class AdministradorRequestDto {
 
     private String nombreYApellido;
 
+	public AdministradorRequestDto(String rol, String nombreYApellido) {
+		this.rol = rol;
+		this.nombreYApellido = nombreYApellido;
+	}
+
 	public String getRol() {
 		return rol;
 	}

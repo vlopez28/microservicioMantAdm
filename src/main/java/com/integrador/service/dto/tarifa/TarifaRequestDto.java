@@ -1,5 +1,6 @@
 package com.integrador.service.dto.tarifa;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,6 +19,12 @@ public class TarifaRequestDto {
     private double tarifaEspecial;
 
     private Date fechaEntradaVigencia;
+
+	public TarifaRequestDto(double tarifaEstandar, double tarifaEspecial, Timestamp fechaEntradaVigencia) {
+		this.tarifaEstandar = tarifaEstandar;
+		this.tarifaEspecial = tarifaEspecial;
+		this.fechaEntradaVigencia = fechaEntradaVigencia;
+	}
 
 	public Long getId() {
 		return id;

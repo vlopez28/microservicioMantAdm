@@ -19,6 +19,17 @@ public class MantenimientoRequestDto {
 
     private boolean reparado;
     
+    
+	public MantenimientoRequestDto(Long idMonopatin, Timestamp fechaHoraInicioMantenimiento,
+			Timestamp fechaHoraFinalizacionMantenimiento, boolean reparado) {
+		this.idMonopatin = idMonopatin;
+		this.fechaHoraInicioMantenimiento = fechaHoraInicioMantenimiento;
+		this.fechaHoraFinalizacionMantenimiento = fechaHoraFinalizacionMantenimiento;
+		this.reparado = reparado;
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}

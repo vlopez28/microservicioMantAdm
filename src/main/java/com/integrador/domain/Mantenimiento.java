@@ -30,11 +30,10 @@ public class Mantenimiento implements Serializable{
     private boolean reparado;
 
     public Mantenimiento(MantenimientoRequestDto request){
-    this.IDMantenimiento = request.getId();
-       this.monopatinId = request.getIdMonopatin();
-       this.fechaHoraInicioMantenimiento= request.getFechaHoraInicioMantenimiento();
-       this.fechaHoraFinalizacionMantenimiento= request.getFechaHoraFinalizacionMantenimiento();
-       this.reparado= request.isReparado();
+    	this.monopatinId = (long) request.getIdMonopatin();
+    	this.fechaHoraInicioMantenimiento= request.getFechaHoraInicioMantenimiento();
+    	this.fechaHoraFinalizacionMantenimiento= request.getFechaHoraFinalizacionMantenimiento();
+    	this.reparado= request.isReparado();
     }
     
     public void finalizar() {
@@ -53,15 +52,13 @@ public class Mantenimiento implements Serializable{
 
 
 	public Mantenimiento() {
-		super();
+		
 	}
 
 
 	public Long getIDMantenimiento() {
 		return IDMantenimiento;
 	}
-
-	
 
 	public Date getFechaHoraInicioMantenimiento() {
 		return fechaHoraInicioMantenimiento;
@@ -78,8 +75,6 @@ public class Mantenimiento implements Serializable{
 	public void setIDMantenimiento(Long iDMantenimiento) {
 		IDMantenimiento = iDMantenimiento;
 	}
-
-	
 
 	public void setFechaHoraInicioMantenimiento(Date fechaHoraInicioMantenimiento) {
 		this.fechaHoraInicioMantenimiento = fechaHoraInicioMantenimiento;

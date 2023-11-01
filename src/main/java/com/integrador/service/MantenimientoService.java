@@ -39,6 +39,11 @@ public class MantenimientoService {
 	@Autowired
     private  RestTemplate restTemplate;
 	
+	
+	public MantenimientoService(MantenimientoRepository mantenimientoRepository) {
+		this.mantenimientoRepository = mantenimientoRepository;
+	}
+
 	@Transactional
     public MantenimientoResponseDto save(MantenimientoRequestDto request){
     	Mantenimiento mantenimiento= new Mantenimiento(request);
@@ -72,7 +77,7 @@ public class MantenimientoService {
         
         mant.setFechaHoraFinalizacionMantenimiento(request.getFechaHoraFinalizacionMantenimiento());
         mant.setFechaHoraInicioMantenimiento(request.getFechaHoraInicioMantenimiento());
-        mant.setMonopatinId(request.getIdMonopatin());
+        mant.setMonopatinId((long) request.getIdMonopatin());
         mant.setReparado(request.isReparado());
         return this.mantenimientoRepository.save(mant);
     }

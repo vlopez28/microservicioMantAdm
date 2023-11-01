@@ -47,7 +47,14 @@ public class AdministradorService {
 	@Autowired
     private  RestTemplate restTemplate;
 	
-    @Transactional
+	
+	
+    public AdministradorService(AdministradorRepository administradorRepository, TarifaRepository tarifaRepository) {
+		this.administradorRepository = administradorRepository;
+		this.tarifaRepository = tarifaRepository;
+	}
+
+	@Transactional
     public AdministradorResponseDto save (AdministradorRequestDto request){
         Administrador administrador= new Administrador(request);
         Administrador result = this.administradorRepository.save(administrador);
@@ -253,7 +260,7 @@ public class AdministradorService {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         ResponseEntity<Cuenta> response = restTemplate.exchange(
-                "http://localhost:8080/api/cuentas/" + cuentaId,
+                "http://localhost:8005/api/cuentas/" + cuentaId,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<Cuenta>() {
@@ -270,7 +277,7 @@ public class AdministradorService {
             c.setDisponible(false);
             HttpEntity<Cuenta> requestEntity2 = new HttpEntity<>(c, headers);
             ResponseEntity<Cuenta> response2 = restTemplate.exchange(
-                    "http://localhost:8080/api/cuentas/" + cuentaId,
+                    "http://localhost:8005/api/cuentas/" + cuentaId,
                     HttpMethod.PUT,
                     requestEntity2,
 
