@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 import com.integrador.service.dto.parada.ParadaRequestDto;
 @Data
-@NoArgsConstructor
 public class Parada implements Serializable {
 
     private String nombre;

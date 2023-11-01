@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
-@NoArgsConstructor
+
 @Data
 @Entity
 public class Mantenimiento implements Serializable{

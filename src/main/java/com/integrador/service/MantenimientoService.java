@@ -97,7 +97,6 @@ public class MantenimientoService {
 
 			Monopatin m = response.getBody();
 			//chequeo que si necesitaMantenimiento
-			System.out.println("mon" + m);
 			if(m.getEstado().equalsIgnoreCase("en mantenimiento")) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El monopatin ya esta en mantenimiento");
 			}
@@ -106,8 +105,7 @@ public class MantenimientoService {
 				//lo pongo no disponible y el estado en mantenimiento
 				m.setDisponible(false);
 				m.setEstado("en mantenimiento");
-				HttpEntity<Monopatin> requestEntity2 = new HttpEntity<>(m,headers);
-		        System.out.println("hola2");
+				HttpEntity<Monopatin> requestEntity2 = new HttpEntity<>(m,headers);		      
 				ResponseEntity<Monopatin> response2 = restTemplate.exchange(
 						"http://localhost:8003/api/monopatines/" + idMonopatin,
 						HttpMethod.PUT,

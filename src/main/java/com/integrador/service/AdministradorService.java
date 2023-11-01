@@ -5,14 +5,18 @@ import com.integrador.domain.Administrador;
 import com.integrador.domain.Cuenta;
 import com.integrador.domain.Monopatin;
 import com.integrador.domain.Parada;
+import com.integrador.domain.Tarifa;
 import com.integrador.service.exception.NotFoundException;
 import com.integrador.repository.AdministradorRepository;
+import com.integrador.repository.TarifaRepository;
 import com.integrador.service.dto.administrador.AdministradorRequestDto;
 import com.integrador.service.dto.administrador.AdministradorResponseDto;
-import com.integrador.service.dto.monopatin.MonopatinRequestDto;
-import com.integrador.service.dto.monopatin.MonopatinResponseDto;
+import com.integrador.service.dto.facturacion.FacturacionResponseDto;
+import com.integrador.service.dto.monopatin.MonopatinesCantidadResponseDto;
 import com.integrador.service.dto.monopatinConViajes.MonopatinConViajesResponseDto;
 import com.integrador.service.dto.parada.ParadaRequestDto;
+import com.integrador.service.dto.tarifa.TarifaRequestDto;
+import com.integrador.service.dto.tarifa.TarifaResponseDto;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +32,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +42,8 @@ public class AdministradorService {
 
 	@Autowired
     private AdministradorRepository administradorRepository;
+	@Autowired
+	private TarifaRepository tarifaRepository;
 	@Autowired
     private  RestTemplate restTemplate;
 	
@@ -122,7 +130,6 @@ public class AdministradorService {
     	HttpHeaders headers = new HttpHeaders();
     	Monopatin monopatin = new Monopatin (m);
     	HttpEntity<Monopatin> requestEntity = new HttpEntity<>(monopatin, headers);
-		System.out.println(requestEntity);
         ResponseEntity<String> response = restTemplate.exchange(
 				"http://localhost:8003/api/monopatines",
 				HttpMethod.POST,
@@ -164,7 +171,6 @@ public class AdministradorService {
 
     @Transactional
     public ResponseEntity getMonopatinesConViajes(Long cantViajes, Integer anio) {
-    	System.out.println("hola service"+cantViajes+ anio);
 
     	HttpHeaders headers = new HttpHeaders();
     	HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
@@ -178,6 +184,25 @@ public class AdministradorService {
 
     	headers.setContentType(MediaType.APPLICATION_JSON);
     	return response;
+    }
+    
+    //devuleve los monopatines en operacion vs los de mantenimiento
+    @Transactional
+    public MonopatinesCantidadResponseDto getMonopatinesOperacionMantenimiento() {
+    	MonopatinesCantidadResponseDto m = new MonopatinesCantidadResponseDto();
+    	HttpHeaders headers = new HttpHeaders();
+    	HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+    	ResponseEntity<MonopatinesCantidadResponseDto> response = restTemplate.exchange(
+				"http://localhost:8003/api/monopatines/enOperacionMantenimiento",
+				HttpMethod.GET,
+				requestEntity,
+				new ParameterizedTypeReference<MonopatinesCantidadResponseDto>() {}
+				);	
+    	if(response.getStatusCode().is2xxSuccessful()) {
+    		m = response.getBody();
+    	}
+    	
+    	return m;
     }
     
     //agregar parada
@@ -259,6 +284,76 @@ public class AdministradorService {
         }
 
     }
+    
+    @Transactional
+    public Tarifa updateTarifa(TarifaRequestDto request){
+        Date fechaHoy = new Date();
+        Tarifa tarifaModificada = null;
+        if(request.getFechaEntradaVigencia().before(fechaHoy) || request.getFechaEntradaVigencia().equals(fechaHoy) ) {
+            Tarifa tarifa = this.tarifaRepository.findById(request.getId()).orElseThrow(
+                    () -> new NotFoundException("Id incorrecto", request.getId()));
+
+            tarifa.setTarifaEspecial(request.getTarifaEspecial());
+            tarifa.setTarifaEstandar(request.getTarifaEstandar());
+            tarifa.setFechaEntradaVigencia(fechaHoy);
+
+            tarifaModificada = this.tarifaRepository.save(tarifa);
+        }
+      
+        return tarifaModificada;
+
+    }
+    
+    @Transactional
+    public TarifaResponseDto saveTarifa(TarifaRequestDto request){
+		Tarifa tarifa = new Tarifa(request);
+        Tarifa result = this.tarifaRepository.save(tarifa);
+        return new TarifaResponseDto(result);
+    }
+	
+	@Transactional
+    public TarifaResponseDto definirTarifaComun(Long id, double precio) {
+		Tarifa tarifa = this.tarifaRepository.findById(id).orElseThrow(
+	                () -> new NotFoundException("ID de tarifa inválido: ", id));
+		
+		tarifa.setTarifaEstandar(precio);
+		Tarifa rdo = this.tarifaRepository.save(tarifa);
+		
+		return new TarifaResponseDto(rdo);
+		
+    }
+	
+	@Transactional
+    public TarifaResponseDto definirTarifaEspecial(Long id, double precio) {
+		Tarifa tarifa = this.tarifaRepository.findById(id).orElseThrow(
+	                () -> new NotFoundException("ID de tarifa inválido: ", id));
+		
+		tarifa.setTarifaEspecial(precio);
+		Tarifa rdo = this.tarifaRepository.save(tarifa);
+		
+		return new TarifaResponseDto(rdo);
+		
+    }
+	
+	@Transactional
+	   public FacturacionResponseDto facturacionEnMeses(Integer mesInicio, Integer mesFin) {
+		
+		HttpHeaders headers = new HttpHeaders();
+    	HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+    	ResponseEntity<Double> response = restTemplate.exchange(
+				"http://localhost:8003/api/viajes/facturacion/" + mesInicio + "/" + mesFin,
+				HttpMethod.GET,
+				requestEntity,
+				Double.class
+				);	
+    	//headers.setContentType(MediaType.APPLICATION_JSON);
+    	String descripcion = "Facturacion: mes: " + mesInicio + " hasta mes: " + mesFin;
+    	Double facturacion = response.getBody();
+    	FacturacionResponseDto rdo = new FacturacionResponseDto(descripcion, facturacion);
+    	
+    	return rdo;
+		   
+	   }
 
 
 }

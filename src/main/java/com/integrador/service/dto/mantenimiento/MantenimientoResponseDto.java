@@ -10,8 +10,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
-@RequiredArgsConstructor
-@NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class MantenimientoResponseDto {
 

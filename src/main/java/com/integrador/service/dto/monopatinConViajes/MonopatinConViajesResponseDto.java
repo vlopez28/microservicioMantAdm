@@ -10,13 +10,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-@Data
-@RequiredArgsConstructor
-@NoArgsConstructor
+
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class MonopatinConViajesResponseDto implements Serializable{
 	
-//	private Long id;
+	private Long id;
 
     private GPS ubicacion;
 
@@ -32,9 +30,9 @@ public class MonopatinConViajesResponseDto implements Serializable{
     
     private Date finViaje;
 
-	public MonopatinConViajesResponseDto(GPS ubicacion, String estado, boolean disponible,
+	public MonopatinConViajesResponseDto(Long id, GPS ubicacion, String estado, boolean disponible,
 			double kmsRecorridos, double kmsMant, Long cantidadViajes, Date finViaje) {
-//	this.id = id;
+	this.id = id;
 		this.ubicacion = ubicacion;
 		this.estado = estado;
 		this.disponible = disponible;

@@ -14,7 +14,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Transient;
 @Data
-@NoArgsConstructor
 public class Monopatin implements Serializable {
 	private Long id;
 	
