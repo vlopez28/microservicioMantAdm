@@ -34,8 +34,8 @@ public class LoadDataBase {
 
 			AdministradorService as = new AdministradorService(administradorRepository, tarifaRepository);
 		
-			as.save(adm1);
-			as.save(adm2);
+//			as.save(adm1);
+//			as.save(adm2);
 			
 			Timestamp fecha1 = Timestamp.valueOf("2023-06-24 10:10:10.0");
 			Timestamp fecha2 = Timestamp.valueOf("2023-10-16 12:07:10.0");
@@ -44,10 +44,10 @@ public class LoadDataBase {
 			TarifaRequestDto tr2 = new TarifaRequestDto(53, 70, fecha2);
 			
 			TarifaService ts = new TarifaService(tarifaRepository);
-			
-			ts.save(tr1);
-			ts.save(tr2);
-			
+//			
+//			ts.save(tr1);
+//			ts.save(tr2);
+//			
 			
 			Timestamp fechaInicio1 = Timestamp.valueOf("2023-08-24 10:10:10.0");
 			Timestamp fechaFin1 = Timestamp.valueOf("2023-08-30 12:07:10.0");
@@ -87,18 +87,18 @@ public class LoadDataBase {
 			
 			MantenimientoService ms = new MantenimientoService(mantenimientoRepository);
 			
-			ms.save(mr1);
-			ms.save(mr2);
-			ms.save(mr3);
-			ms.save(mr4);
-			ms.save(mr5);
-			ms.save(mr6);
-			ms.save(mr7);
-			ms.save(mr8);
-			ms.save(mr9);
-			ms.save(mr10);
-			ms.save(mr11);
-			
+//			ms.save(mr1);
+//			ms.save(mr2);
+//			ms.save(mr3);
+//			ms.save(mr4);
+//			ms.save(mr5);
+//			ms.save(mr6);
+//			ms.save(mr7);
+//			ms.save(mr8);
+//			ms.save(mr9);
+//			ms.save(mr10);
+//			ms.save(mr11);
+//			
 			
 		};
 	}
